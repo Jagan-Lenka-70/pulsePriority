@@ -1,0 +1,56 @@
+:root {
+    --bg-primary: #061329;
+    --bg-secondary: #0c1f3d;
+    --card-bg: #10284f;
+    --accent: #2385ff;
+}
+
+body {
+    background: radial-gradient(circle at top right, #12376f 0%, var(--bg-primary) 42%, #030813 100%);
+    color: #eaf1ff;
+    min-height: 100vh;
+}
+
+.login-bg {
+    background: radial-gradient(circle at top left, #0c2f62 0%, #081b39 45%, #040b19 100%);
+}
+
+.dashboard-header {
+    background: linear-gradient(135deg, #0f2d5b 0%, #10284f 60%, #0a1f41 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-dark {
+    background: linear-gradient(160deg, var(--card-bg), var(--bg-secondary));
+    color: #eaf1ff;
+}
+
+.form-control,
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-control::placeholder {
+    color: rgba(240, 244, 255, 0.65);
+}
+
+.table {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background: #1970da;
+    border-color: #1970da;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+}
