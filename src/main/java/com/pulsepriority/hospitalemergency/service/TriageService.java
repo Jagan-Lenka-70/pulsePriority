@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 @Service
@@ -32,6 +34,14 @@ public class TriageService {
     @Transactional(readOnly = true)
     public List<Patient> currentQueue() {
         return maxHeapOrderedPatients();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Patient> currentQueue(String query) {
+        if (query == null || query.isBlank()) {
+            return currentQueue();
+        }
+        return maxHeapOrderedPatients(patientRepository.findByTreatedFalseAndFullNameContainingIgnoreCase(query.trim()));
     }
 
     @Transactional
@@ -61,8 +71,32 @@ public class TriageService {
         return patientRepository.findByTreatedTrueOrderByIdDesc();
     }
 
+    @Transactional(readOnly = true)
+    public List<Patient> treatedHistory(String query) {
+        if (query == null || query.isBlank()) {
+            return treatedHistory();
+        }
+        return patientRepository.findByTreatedTrueAndFullNameContainingIgnoreCaseOrderByIdDesc(query.trim());
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Long> dashboardStats() {
+        long waiting = patientRepository.countByTreatedFalse();
+        long treated = patientRepository.countByTreatedTrue();
+
+        Map<String, Long> stats = new LinkedHashMap<>();
+        stats.put("waiting", waiting);
+        stats.put("treated", treated);
+        stats.put("total", waiting + treated);
+        return stats;
+    }
+
     private List<Patient> maxHeapOrderedPatients() {
-        return patientRepository.findByTreatedFalse().stream()
+        return maxHeapOrderedPatients(patientRepository.findByTreatedFalse());
+    }
+
+    private List<Patient> maxHeapOrderedPatients(List<Patient> patients) {
+        return patients.stream()
                 .sorted(Comparator.comparingInt(Patient::getTriageScore).reversed()
                         .thenComparing(Patient::getId))
                 .toList();

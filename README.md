@@ -14,6 +14,9 @@ The system is designed for high-pressure environments where patients with higher
 - **Doctor Console** to extract the next highest-priority patient
 - **Live queue view** and **treated history log**
 - **One-click demo data initializer** for instant classroom demo
+- **Dashboard analytics cards** (Waiting, Treated, Total)
+- **Patient name search/filter** on dashboard and API
+- **CSV export** for treated patient history
 - **Emergency level badges**
   - `8-10` -> Red (Critical)
   - `4-7` -> Yellow (Urgent)
@@ -109,6 +112,8 @@ mvnw.cmd spring-boot:run
 - `GET /api/triage/queue` - Get waiting queue sorted by priority
 - `POST /api/triage/next` - Treat next highest-priority patient
 - `GET /api/triage/history` - Get treated patients log
+- `GET /api/triage/stats` - Get dashboard counters
+- `GET /api/triage/history/export` - Download treated history as CSV
 
 Sample request:
 

@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class DashboardController {
@@ -21,10 +22,12 @@ public class DashboardController {
     }
 
     @GetMapping("/")
-    public String dashboard(Model model) {
+    public String dashboard(@RequestParam(required = false, defaultValue = "") String q, Model model) {
         model.addAttribute("patientRequest", new PatientRequest());
-        model.addAttribute("queue", triageService.currentQueue());
-        model.addAttribute("history", triageService.treatedHistory());
+        model.addAttribute("queue", triageService.currentQueue(q));
+        model.addAttribute("history", triageService.treatedHistory(q));
+        model.addAttribute("stats", triageService.dashboardStats());
+        model.addAttribute("q", q);
         return "index";
     }
 
@@ -35,6 +38,8 @@ public class DashboardController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("queue", triageService.currentQueue());
             model.addAttribute("history", triageService.treatedHistory());
+            model.addAttribute("stats", triageService.dashboardStats());
+            model.addAttribute("q", "");
             return "index";
         }
 
